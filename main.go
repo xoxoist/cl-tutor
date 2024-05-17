@@ -60,6 +60,8 @@ func ControllerBravoApplication(requestId string, request bravo.Request) (*bravo
 
 	// prepare context for contextual logging
 	service := bravo.NewBravoApplication(appName, version)
+
+	// calling business logic
 	return service.BravoLogicFlowEntry(ctx, request)
 }
 
@@ -79,6 +81,8 @@ func ControllerCharlieApplication(requestId string, request charlie.Request) (*c
 
 	// prepare context for contextual logging
 	service := charlie.NewCharlieApplication(appName, version)
+
+	// calling business logic
 	return service.CharlieLogicFlowEntry(ctx, request)
 }
 
