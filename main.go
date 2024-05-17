@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func ControllerAlphaApplication() {
+func ControllerAlphaApplication() (*alpha.Response, error) {
 	// create logger
 	const appName, logFile, logMode, version = "alpha", "logs/log.svc.a.log", "prd", "v1.0.0"
 	lg := logger.NewZapLogger(logFile, logMode, version, appName)
@@ -39,10 +39,9 @@ func ControllerAlphaApplication() {
 	)
 	response, err := service.AlphaLogicFlowEntry(ctx, requestData)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	fmt.Println("BRAVO", response.BravoManipulatedContent)
-	fmt.Println("CHARLIE", response.CharlieManipulatedContent)
+	return response, nil
 }
 
 func ControllerBravoApplication(requestId string, request bravo.Request) (*bravo.Response, error) {
@@ -84,5 +83,10 @@ func ControllerCharlieApplication(requestId string, request charlie.Request) (*c
 }
 
 func main() {
-	ControllerAlphaApplication()
+	response, err := ControllerAlphaApplication()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("BRAVO:", response.BravoManipulatedContent)
+	fmt.Println("CHARLIE:", response.CharlieManipulatedContent)
 }
