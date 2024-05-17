@@ -124,16 +124,18 @@ func (a *alpha) requestToBravoApp(ctx context.Context, req Request) (*bravo.Resp
 	// request received and logger from controller its already has unique
 	// request id everytime request received.
 	fName := fmt.Sprintf("%s.%s", a.Package, "requestToBravoApp")
-	requestId, ok := ctx.Value("Request-Id").(string)
-	if !ok {
-		return nil, errors.New("request id not pass through context")
-	}
 	cl, ok := ctx.Value(zap.SugaredLogger{}).(*zap.SugaredLogger)
 	if !ok {
 		return nil, errors.New("contextual logging not pass through context")
 	}
 	cl.Infow(fName, "reason", "execution started")
 	defer cl.Infow(fName, "reason", "execution ended")
+
+	// extract request id to be passed to bravo application
+	requestId, ok := ctx.Value("Request-Id").(string)
+	if !ok {
+		return nil, errors.New("request id not pass through context")
+	}
 
 	// sending request to bravo application
 	response, err := a.bravoClient(requestId, bravo.Request{
@@ -153,16 +155,18 @@ func (a *alpha) requestToCharlieApp(ctx context.Context, req Request) (*charlie.
 	// request received and logger from controller its already has unique
 	// request id everytime request received.
 	fName := fmt.Sprintf("%s.%s", a.Package, "requestToCharlieApp")
-	requestId, ok := ctx.Value("Request-Id").(string)
-	if !ok {
-		return nil, errors.New("request id not pass through context")
-	}
 	cl, ok := ctx.Value(zap.SugaredLogger{}).(*zap.SugaredLogger)
 	if !ok {
 		return nil, errors.New("contextual logging not pass through context")
 	}
 	cl.Infow(fName, "reason", "execution started")
 	defer cl.Infow(fName, "reason", "execution ended")
+
+	// extract request id to be passed to charlie application
+	requestId, ok := ctx.Value("Request-Id").(string)
+	if !ok {
+		return nil, errors.New("request id not pass through context")
+	}
 
 	// sending request to charlie application
 	response, err := a.charlieClient(requestId, charlie.Request{
